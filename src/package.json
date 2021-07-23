@@ -11,7 +11,7 @@
   "homepage": "https://github.com/Innovate-Technologies/ITFrame",
   "dependencies": {
     "@google-cloud/logging-bunyan": "^0.9.5",
-    "@sentry/node": "^5.0.8",
+    "@sentry/node": "^6.10.0",
     "@slack/client": "^4.8.0",
     "@slack/interactive-messages": "^1.0.2",
     "asteroid": "^0.7.0",
