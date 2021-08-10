@@ -31,8 +31,8 @@ module.exports.sendSong = async (username, title, artist) => {
     };
     logger = logger.child({ data });
     logger.debug("Sending request");
-    rest.get("https://air.radiotime.com/Playing.ashx", {
-        query: data,
+    rest.post("https://air.radiotime.com/Playing.ashx", {
+        data: data,
         timeout: 5000,
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -44,7 +44,7 @@ module.exports.sendSong = async (username, title, artist) => {
             return;
         }
         if (typeof response === "string" && response.includes("<status>403</status>")
-            || info.statusCode === 403) {
+                || info.statusCode === 403) {
             // Not disabling the integration as TuneIn sends 403 randomly.
             logger.warn("Got a 403, ignoring");
             // logger.error("Got a 403 response, disabling integration");
@@ -71,8 +71,8 @@ module.exports.testInfo = (settings) => new Promise((resolve, reject) => {
     };
     logger = logger.child({ data });
     logger.debug("Sending test request");
-    rest.get("https://air.radiotime.com/Playing.ashx", {
-        query: data,
+    rest.post("https://air.radiotime.com/Playing.ashx", {
+        data: data,
         timeout: 5000,
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -82,7 +82,8 @@ module.exports.testInfo = (settings) => new Promise((resolve, reject) => {
         if (response instanceof Error) {
             return reject(new Error("Invalid details provided for TuneIn AIR"))
         }
-        if (info.statusCode === 403) { // Removed <status>403</status> because TuneIn sends 403s randomly
+        if (typeof response === "string" && response.includes("<status>403</status>")
+                || info.statusCode === 403) {
             return reject(new Error("Invalid details provided for TuneIn AIR"));
         }
         return resolve()
